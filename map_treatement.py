@@ -41,10 +41,10 @@ def darker_color(pixel: tuple, color_tgt: tuple):
 
 # Procedures
 
-def mask(data, criterion: tuple = (109, 40, 45), method = similar_color):
+def mask(data: np.ndarray, criterion: tuple = (109, 40, 45), method = similar_color):
     """
     Apply a mask to on pixels with color near of color_tgt
-    :param data: Representation of the image to treat
+    :param np.ndarray data: Representation of the image to treat
     :param tuple criterion: Color to seek (in RGB)
     :param function method: Method to use for comparaison
     :return: None
@@ -63,10 +63,10 @@ def mask(data, criterion: tuple = (109, 40, 45), method = similar_color):
             print("MASK", int(i * 10000 / height) / 100, "%")  # Indication about the progression
 
 
-def clear(data):
+def clear(data: np.ndarray):
     """
     Erase black pixels with too much white pixels around
-    :param data: Representation of the image to treat
+    :param np.ndarray data: Representation of the image to treat
     :return: None
     """
     height, width = data.shape[:2]  # Information about the image
@@ -87,10 +87,10 @@ def clear(data):
             print("CLEAR", int(i * 10000 / height) / 100, "%")  # Indication about the progression
 
 
-def fulfill(data):
+def fulfill(data: np.ndarray):
     """
     Fulfill area surrounded by black pixels with black pixels
-    :param data: Representation of the image to treat
+    :param np.ndarray data: Representation of the image to treat
     :return: None
     """
     height, width = data.shape[:2]  # Information about the image
@@ -108,10 +108,10 @@ def fulfill(data):
             print("FULFILL", int(i * 10000 / height) / 100, "%")  # Indication about the progression
 
 
-def subdivide(array, sub_height: int, sub_width: int, save_dir: str = "final"):
+def subdivide(array: np.ndarray, sub_height: int, sub_width: int, save_dir: str = "final"):
     """
     Subdivide an image in images of size sub_height x sub_width
-    :param array: Representation of the image to treat
+    :param np.ndarray array: Representation of the image to treat
     :param int sub_height: Height of subdivision
     :param int sub_width: Width of subdivision
     :param str save_dir: Directory to save the subdivisions
@@ -136,10 +136,10 @@ def subdivide(array, sub_height: int, sub_width: int, save_dir: str = "final"):
                 print("SUBDIVISION {} {}".format(i, j))
 
 
-def extract(array):
+def extract(array: np.ndarray):
     """
     Extract information from the treated image
-    :param array: Representation of the Image
+    :param np.ndarray array: Representation of the Image
     :return: Matrix of information
     """
     height, width = array.shape[:2]  # Dimension of the image
