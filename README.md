@@ -43,7 +43,15 @@ alors être associé à une dimension fractale proche de 0.
 
 On pourrait alors songer à simplement forcer l'algorithme à affecter la valeur zéro dans le cas d'une dimension trouvée 
 négative. Pourtant, il semble plus intéressant d'affecter le complément à 2 de la dimension trouvée puisque qu'on pourrait
-interpréter le résultat trouvé comme la dimension de Hausdorff de l'ensemble formée par les zones sans bâtiments.
+interpréter le résultat trouvé comme la dimension de Hausdorff de l'ensemble formée par les zones sans bâtiments. On 
+obtient le résultat suivant :
+
+![Analyse Fractale de Grenoble en 2018 avec méthode du complément à deux dans le cas d'un résultat négatif](results/Grenoble_2018_comp2.png)
+
+On voit immédiatement que cela ne fonctionne pas : des zones de dimension proche de 2 apparaissent à des endroits vides.
+De plus, en appliquant l'algorithme au [Tapis de Sierpiński](https://fr.wikipedia.org/wiki/Tapis_de_Sierpi%C5%84ski), on
+obtient une dimension de Hausdorff de 1,60 alors que la dimension avérée est 1,89. Ainsi l'algorithme semble être à remettre
+en cause.
 
 ## Bibliographie
 

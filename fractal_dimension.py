@@ -86,6 +86,9 @@ def analyse_one_cell(image_dir: str, r_max: int):
         regression_data = np.polyfit(absi, ordo, 1)
 
         a = regression_data[0]  # The fractal dimension is the slope
+
+        if a < 0:
+            a += 2
     except ValueError:
         a = 0
 
