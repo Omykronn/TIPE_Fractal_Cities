@@ -9,7 +9,7 @@ Ce TIPE se place dans le cadre de l'étude des villes et de leur développement 
 modélisation choisie ici est celle d'une fractale afin de répondre à la problématique suivante : **_Comment les fractales
 peuvent-elles nous renseigner sur l'évolution de nos villes ?_**
 
-NB : Les Informations suivantes pourront être modifiées
+NB : Les informations suivantes pourront être modifiées
 
 
 ## Objectif
@@ -25,6 +25,26 @@ l'indice de compacité au cours du temps, et si possible d'en trouver les raison
 Une telle étude sera menée à l'aide de cartes d'occupation des sols issues de l'analyse d'image-satellites. Pour des
 époques plus anciennes, des cartes historiques seront numériquement traitées afin de les rendre utilisables.
 
+
+## Premiers Résultats
+
+Après avoir divisé la périphérie de Grenoble en 400 carrés de 2.5km de côté, on applique la méthode dite *Box Counting
+Method* à chacune d'entre elles afin d'en déduire la dimension fractale (ou de Hausdorff) de chacune. Dans le cas de la
+ville de Grenoble en 2018, on obtient la répartition suivante : 
+
+![Analyse Fractale de Grenoble en 2018](results/Grenoble_2018.png)
+
+Tout d'abord, on retrouve l'organisation générale de la ville de Grenoble avec son hypercentre (au centre en bleu) où
+les bâtiments sont répartis plus densément et sa périphérie en forme d'étoile à trois branches imposée par les montagnes.
+
+Toutefois, on observe des zones de dimensions fractales négatives, ce qui est impossible. Après étude des zones concernées,
+on découvre que ce sont des zones quasiment vides, dont la répartition des bâtiments se rapproche du point. Cela devrait 
+alors être associé à une dimension fractale proche de 0. 
+
+On pourrait alors songer à simplement forcer l'algorithme à affecter la valeur zéro dans le cas d'une dimension trouvée 
+négative. Pourtant, il semble plus intéressant d'affecter le complément à 2 de la dimension trouvée puisque qu'on pourrait
+interpréter le résultat trouvé comme la dimension de Hausdorff de l'ensemble formée par les zones sans bâtiments.
+
 ## Bibliographie
 
 * A Study on the Curves of Scaling Behaviour of Fractal Cities
@@ -34,7 +54,4 @@ Une telle étude sera menée à l'aide de cartes d'occupation des sols issues de
 
 ## Source des données utilisées
 
-* [IGN Remonter le temps](https://remonterletemps.ign.fr) : Carte de l'État-Major (1866)
-* [GeoPortail](https://www.geoportail.gouv.fr/) : Carte IGN (1950)
-* [Theia](https://www.theia-land.fr/) : Carte d'occupation des sols (2009, 2010, 2011, 2014, 2016, 2017, 2018)
-* [CORINE Land Cover](https://land.copernicus.eu/pan-european/corine-land-cover) : Carte d'occupation des sols (1990, 2000, 2006, 2012, 2018)
+[CORINE Land Cover](https://land.copernicus.eu/pan-european/corine-land-cover) : Carte d'occupation des sols (1990, 2006, 2018)
