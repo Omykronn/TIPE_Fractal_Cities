@@ -1,5 +1,9 @@
 import numpy as np
 
+from PIL import Image
+from math import log
+from map_treatement import extract
+
 
 def count_in_a_box(array: np.ndarray, x: int, y: int, c: int):
     """
@@ -48,7 +52,8 @@ def box_counting_method(array: np.ndarray, r_max: int):
             for k in range(len(temp_count)):
                 headcount[k][temp_count[k]] += 1
 
-        print(i)  # Indication about the progression
+        if i % 10 == 0:
+            print("BOX COUNTING", int(i * 10000 / height) / 100, "%")  # Indication about the progression
 
     N_r = [0 for _ in range(nb_r)]  # Initialisation of N(r)
 
@@ -57,3 +62,31 @@ def box_counting_method(array: np.ndarray, r_max: int):
             N_r[k] += headcount[k][m] / m  # Calculation of N_(r) with est_probabilities
 
     return N_r
+
+
+def analyse_one_cell(image_dir: str, r_max: int):
+    """
+    Procedure of analysis on one cell of the original image (ie on one subdivision)
+    :param str image_dir: Directory to the image
+    :param int r_max: Maximum length of the box (must be odd)
+    :return: None
+    """
+    picture = extract(np.array(Image.open(image_dir)))
+    data = box_counting_method(picture, r_max)  # Box Counting Method
+
+    absi = []
+    ordo = []
+
+    try:  # Try and catch structure in case of a blank cell : log(0) is not defined
+        for i in range(len(data)):
+            absi.append(-log(2*i+1))
+            ordo.append(log(data[i]))
+
+        # Determination of the fractal dimension with a linear regression between log(1/r) and log(N(r))
+        regression_data = np.polyfit(absi, ordo, 1)
+
+        a = regression_data[0]  # The fractal dimension is the slope
+    except ValueError:
+        a = 0
+
+    return a

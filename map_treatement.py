@@ -2,7 +2,7 @@ import math
 import numpy as np
 
 from PIL import Image
-from os import mkdir
+from os import makedirs
 
 
 # Tools
@@ -108,29 +108,29 @@ def fulfill(data: np.ndarray):
             print("FULFILL", int(i * 10000 / height) / 100, "%")  # Indication about the progression
 
 
-def subdivide(array: np.ndarray, sub_height: int, sub_width: int, save_dir: str = "final"):
+def subdivide(array: np.ndarray, x_sub: int, y_sub: int, save_dir: str = "final"):
     """
-    Subdivide an image in images of size sub_height x sub_width
+    Subdivide an image in little images
     :param np.ndarray array: Representation of the image to treat
-    :param int sub_height: Height of subdivision
-    :param int sub_width: Width of subdivision
+    :param int x_sub: Number of subdivisions on the x-axis
+    :param int y_sub: Number of subdivisions on the y-axis
     :param str save_dir: Directory to save the subdivisions
     :return: None
     """
     height, width = array.shape[:2]  # Dimension of the original image
 
-    if height % sub_height != 0 or width % sub_width != 0:
+    if height % x_sub != 0 or width % y_sub != 0:
         # If sub_height or sub_width values don't match with the dimension of the image : error
         raise ValueError("Subdivision impossible with given characteristics")
     else:
-        x_sub = height // sub_height
-        y_sub = width // sub_width
+        new_height = height // x_sub
+        new_width = width // y_sub
 
-        mkdir(save_dir)  # Creation of the directory for results
+        makedirs(save_dir, exist_ok=True)  # Creation of the directory for results
 
         for i in range(x_sub):
             for j in range(y_sub):
-                subdivision = [[array[i * sub_height + k][j * sub_width + l] for l in range(sub_height)] for k in range(sub_width)]
+                subdivision = [[array[i * new_height + k][j * new_width + l] for l in range(new_width)] for k in range(new_height)]
                 Image.fromarray(np.array(subdivision)).save("{}/subdivision_{}_{}.png".format(save_dir, i, j))
 
                 print("SUBDIVISION {} {}".format(i, j))
@@ -153,3 +153,22 @@ def extract(array: np.ndarray):
                 data[i][j] = 0
 
     return data
+
+
+def prepare(name_file: str, year: int, resolution: int, exit_dir: str = "data"):
+    """
+    Prepare files from an image for the fractal analysis
+    :param str name_file: File's name
+    :param int year: Year of creation of the image
+    :param int resolution: Root of the number of sub-images to create
+    :param str exit_dir: Directory where all the files will be created (default : data)
+    :return: None
+    """
+    picture = np.array(Image.open(name_file))  # Open the image
+
+    # Creation of all the needed directory
+    makedirs(exit_dir, exist_ok=True)
+
+    mask(picture, (16, 16, 16), darker_color)  # First : application of a mask to keep only the useful data
+    subdivide(picture, resolution, resolution, exit_dir)  # Then, subdivision of the image according to resolution
+
