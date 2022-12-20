@@ -53,6 +53,14 @@ De plus, en appliquant l'algorithme au [Tapis de Sierpiński](https://fr.wikiped
 obtient une dimension de Hausdorff de 1,60 alors que la dimension avérée est 1,89. Ainsi l'algorithme semble être à remettre
 en cause.
 
+On décide alors d'utiliser une version plus simple de l'algorithme Box-Counting, qui semble bien mieux fonctionner :
+
+![Nouvelle Analyse Fractale de Grenoble (2018)](results/Grenoble_2018_50x50_20Dec2022_1809.png)
+
+On peut ainsi observer l'observation du développement du tissu urbain Grenoblois de 1990 à 2018.
+
+![Développement du tissu urbain Grenoblois de 1990 à 2018](results/grenoble_1990_2006_2018.gif)
+
 ## Bibliographie
 
 * A Study on the Curves of Scaling Behaviour of Fractal Cities
