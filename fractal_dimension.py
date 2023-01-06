@@ -2,7 +2,7 @@ import numpy as np
 
 from PIL import Image
 from math import log, ceil
-from map_treatement import extract
+from map_treatment import extract
 
 
 def is_in(array: np.ndarray, x: int, y: int, side: int):
@@ -20,6 +20,7 @@ def is_in(array: np.ndarray, x: int, y: int, side: int):
 
     # While structure : when there is a one, it stops
     while i < side and x + i < height and not found:  # Check in targeted cell is still in array
+        j = 0
         while j < side and y + j < width and not found:
             found = (array[x + i][y + j] == 1)
             j += 1
@@ -52,7 +53,7 @@ def box_counting(array: np.ndarray):
         for i in range(max_i):
             for j in range(max_j):
                 # For each (i, j), check for 1 in a square
-                if is_in(array, i*(2**e), j*(2**e), 2**p):
+                if is_in(array, i*(2**e), j*(2**e), 2**e):  # Error was here
                     data[e] += 1
 
         print("BOX COUNTING", int(e * 10000 / p) / 100, "%")  # Indication about the progression
@@ -67,19 +68,23 @@ def analyse_one_cell(image_dir: str):
     :param str image_dir: Directory to the image
     :return: None
     """
-    picture = extract(np.array(Image.open(image_dir)))
-    absi, ordo = box_counting(picture)  # Box Counting Method
+    picture, empty = extract(np.array(Image.open(image_dir)))
 
-    try:  # Try and catch structure in case of a blank cell : log(0) is not defined
+    if empty:  # Check if the picture is empty
+        print("EMPTY")
+        # If so, the dimension is null
+        a = 0
+    else:
+        absi, ordo = box_counting(picture)  # Box Counting Method
+
+        # TODO : Résolve the problem of log(0) (e.g. 5x5_0_3)
         for i in range(len(absi)):
-            absi[i] = -log(absi[i])
-            ordo[i] = log(ordo[i])
+                absi[i] = -log(absi[i])
+                ordo[i] = log(ordo[i])
 
         # Determination of the fractal dimension with a linear regression between log(1/r) and log(N(r))
         regression_data = np.polyfit(absi, ordo, 1)
 
         a = regression_data[0]  # The fractal dimension is the slope
-    except ValueError:
-        a = 0
 
     return a

@@ -102,18 +102,19 @@ def fulfill(data: np.ndarray):
                     if i - k >= 0 and data[i - k][j][0] == 0:  # Horizontally
                         data[i - k + 1][j] = (0, 0, 0, 255)
                     if j - k >= 0 and data[i][j - k][0] == 0:  # Vertically
-                        data[i][j- k + 1] = (0, 0, 0, 255)
+                        data[i][j - k + 1] = (0, 0, 0, 255)
 
         if i % 100 == 0:
             print("FULFILL", int(i * 10000 / height) / 100, "%")  # Indication about the progression
 
 
-def subdivide(array: np.ndarray, x_sub: int, y_sub: int, save_dir: str = "final"):
+def subdivide(array: np.ndarray, x_sub: int, y_sub: int, dilatation: int, save_dir: str = "final"):
     """
     Subdivide an image in little images
     :param np.ndarray array: Representation of the image to treat
     :param int x_sub: Number of subdivisions on the x-axis
     :param int y_sub: Number of subdivisions on the y-axis
+    :param int dilatation: Dilatation Factor of subdivisons
     :param str save_dir: Directory to save the subdivisions
     :return: None
     """
@@ -131,6 +132,7 @@ def subdivide(array: np.ndarray, x_sub: int, y_sub: int, save_dir: str = "final"
         for i in range(x_sub):
             for j in range(y_sub):
                 subdivision = [[array[i * new_height + k][j * new_width + l] for l in range(new_width)] for k in range(new_height)]
+                subdivision = dilate(subdivision, dilatation)
                 Image.fromarray(np.array(subdivision)).save("{}/subdivision_{}_{}.png".format(save_dir, i, j))
 
                 print("SUBDIVISION {} {}".format(i, j))
@@ -140,27 +142,28 @@ def extract(array: np.ndarray):
     """
     Extract information from the treated image
     :param np.ndarray array: Representation of the Image
-    :return: Matrix of information
+    :return np.ndarray * bool: Matrix of information
     """
     height, width = array.shape[:2]  # Dimension of the image
     data = np.zeros((height, width))  # Empty array with zeroes
+
+    empty = True  # Check if the picture is not empty
 
     for i in range(height):
         for j in range(width):
             if array[i][j][0] == 0:  # If the pixel is black, then it is saved as 1
                 data[i][j] = 1
-            else:  # Else, it is zero
-                data[i][j] = 0
+                empty = False
 
-    return data
+    return data, empty
 
 
-def prepare(name_file: str, year: int, resolution: int, exit_dir: str = "data"):
+def prepare(name_file: str, resolution: int, dilatation: int, exit_dir: str = "data"):
     """
     Prepare files from an image for the fractal analysis
     :param str name_file: File's name
-    :param int year: Year of creation of the image
     :param int resolution: Root of the number of sub-images to create
+    :param int dilatation: Factor of dilatation of subdivisions
     :param str exit_dir: Directory where all the files will be created (default : data)
     :return: None
     """
@@ -170,5 +173,26 @@ def prepare(name_file: str, year: int, resolution: int, exit_dir: str = "data"):
     makedirs(exit_dir, exist_ok=True)
 
     mask(picture, (16, 16, 16), darker_color)  # First : application of a mask to keep only the useful data
-    subdivide(picture, resolution, resolution, exit_dir)  # Then, subdivision of the image according to resolution
+    subdivide(picture, resolution, resolution, dilatation, exit_dir)  # Then, subdivision of the image according to resolution
 
+
+def dilate(array: list, factor: int):
+    """
+    :param list array: Image to dilate
+    :param int factor: Factor of dilatation
+    :return np.ndarray result: Dilated Image
+    """
+    assert type(factor) is int
+
+    height, width = len(array), len(array[0])  # TODO : Prendre en compte si la matrice est totalement vide
+
+    result = [[0 for _ in range(width * factor)] for _ in range(height * factor)]
+
+    for i in range(height):
+        for j in range(width):
+            # Copy of one pixel 
+            for k in range(factor):
+                for l in range(factor):
+                    result[i * factor + k][j * factor + l] = array[i][j] 
+
+    return np.array(result)
