@@ -9,8 +9,6 @@ Ce TIPE se place dans le cadre de l'étude des villes et de leur développement 
 modélisation choisie ici est celle d'une fractale afin de répondre à la problématique suivante : **_Comment les fractales
 peuvent-elles nous renseigner sur l'évolution de nos villes ?_**
 
-NB : Les informations suivantes pourront être modifiées
-
 
 ## Objectif
 
@@ -25,8 +23,12 @@ l'indice de compacité au cours du temps, et si possible d'en trouver les raison
 Une telle étude sera menée à l'aide de cartes d'occupation des sols issues de l'analyse d'image-satellites. Pour des
 époques plus anciennes, des cartes historiques seront numériquement traitées afin de les rendre utilisables.
 
+## Résultats
 
-## Premiers Résultats
+![Analyse Fractale de Grenoble en 1990, 2006 et 2018](results/timelapse_v3.png)
+
+
+## Démarche
 
 Après avoir divisé la périphérie de Grenoble en 400 carrés de 2.5km de côté, on applique la méthode dite *Box Counting
 Method* à chacune d'entre elles afin d'en déduire la dimension fractale (ou de Hausdorff) de chacune. Dans le cas de la
@@ -46,7 +48,9 @@ négative. Pourtant, il semble plus intéressant d'affecter le complément à 2 
 interpréter le résultat trouvé comme la dimension de Hausdorff de l'ensemble formée par les zones sans bâtiments. On 
 obtient le résultat suivant :
 
-<img src="results/Grenoble_2018_comp2.png" alt="Analyse Fractale de Grenoble en 2018 avec méthode du complément à deux dans le cas d'un résultat négatif" width="50%" margin-left="auto" margin-right="auto" display="block">
+<div align="center">
+    <img src="results/Grenoble_2018_comp2.png" alt="Analyse Fractale de Grenoble en 2018 avec méthode du complément à deux dans le cas d'un résultat négatif" width="50%">
+</div>
 
 On voit immédiatement que cela ne fonctionne pas : des zones de dimension proche de 2 apparaissent à des endroits vides.
 De plus, en appliquant l'algorithme au [Tapis de Sierpiński](https://fr.wikipedia.org/wiki/Tapis_de_Sierpi%C5%84ski), on
@@ -57,36 +61,39 @@ On décide alors d'utiliser une version plus simple de l'algorithme Box-Counting
 
 ![Analyse Fractale de Grenoble (Deuxième Version)](results/timelapse_v2.png)
 
-Toutefois, on observe que les zones denses (l'hyper-centre de Grenoble en particulier) n'ont pas une dimension proche de 2 mais envriron 1,5 ce qui n'est pas cohérent.
+Toutefois, on observe que les zones denses (l'hyper-centre de Grenoble en particulier) n'ont pas une dimension proche de 2 mais environ 1,5 ce qui n'est pas cohérent.
 
 Pour résoudre ce problème, il est nécessaire d'augmenter artificiellement la taille des subdivisons afin de pouvoir utiliser une plus large gamme de tailles de boîtes. On obtient alors une dimension bien plus cohérente (~ 1,95).
 
-D'autres parts, une clause *try: catch:* a été supprimée dans *fractal_analysis.box_counting* pour la raison suivante : elle semblait inutile. Pourtant à l'éxecution suivante, un log(0) apparait au niveau de la position de la clause supprimée.
+D'autres parts, une clause *try: catch:* a été supprimée dans *fractal_analysis.box_counting* puisqu'elle semblait inutile. Pourtant à l'éxecution suivante, le calcul de log(0) apparait au niveau de la position de la clause supprimée.
 
-Après quelques relectures des fonctions, une erreur est découverte dans *fractal_dimension.is_in* : une réinitialisation de j manquait. En particulier, cela voulait dire que les zones partiellement urbanisées se voyaient assignées une dimension nulle, ce qui ne devait pas être le cas.
+Après quelques relectures des fonctions, une erreur est découverte dans *fractal_dimension.is_in* : une réinitialisation de j manquait. En particulier, cela voulait dire que les zones partiellement urbanisées se voyaient assigner une dimension nulle, ce qui ne devait pas être le cas.
 
 Après ces deux corrections majeures, on obtient les résultats suivants :
 
 ![Analyse Fractale de Grenoble (Deuxième Version)](results/timelapse_v3.png)
 
+## Matériel
+
 Ces analyses ont été effectuées en 43min, 47min et 49min respectivement. Le matériel utilisé est le suivant :
 
 * Processeur : Intel Core i5 vPro (2,30GHz)
 * RAM : 8GB
-* Memoire : 512GB SSD
+* Mémoire : 512GB SSD
+* Langage de Programmation : Python 3.9.2
+
+## Source des données utilisées
+
+[CORINE Land Cover](https://land.copernicus.eu/pan-european/corine-land-cover) : Carte d'occupation des sols (1990, 2006, 2018)
 
 ## Bibliographie
 
 * Mark McClure : [*Chaos and Fractals*](https://www.marksmath.org/classes/Fall2021ChaosAndFractals/chaos_and_fractals_2021/contents.html) (Section 4) 
 
-* Dierk Schleicher : [*Hausdorff Dimension, its Properties, and its Surprises*](arxiv:math/0505099)
+* Dierk Schleicher : [*Hausdorff Dimension, its Properties, and its Surprises*](https://arxiv.org/abs/math/0505099)
 
 * Sara Encarnação, Marcos Gaudiano, Francisco C. Santos, José A. Tenedório, & Jorge M Pacheco : [*Fractal Carthography of urban area*](https://www.nature.com/articles/srep00527)
 
 * National Institutes of Health : [*Fractals and Fractal Analysis*](https://imagej.nih.gov/ij/plugins/fraclac/FLHelp/TheoryStartUpScreen.htm) (Section Box Counting)
 
 * Khaled Harrar & Latifa Hamami : [*The box counting method for evaluate the fractal Dimension in radiographic images*](https://www.researchgate.net/publication/254455405_The_Box_Counting_Method_for_Evaluate_the_Fractal_Dimension_in_Radiographic_Images)
-
-## Source des données utilisées
-
-[CORINE Land Cover](https://land.copernicus.eu/pan-european/corine-land-cover) : Carte d'occupation des sols (1990, 2006, 2018)
