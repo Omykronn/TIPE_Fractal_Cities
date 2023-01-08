@@ -1,92 +1,71 @@
-# TIPE - Modélisation Fractale des Villes
+# Fractal Modelisaton of Cities
 
-Ce TIPE (Travaux d'Initiatives Personnelles encadrées) réalisé durant les années en Classe Préparatoire Scientifique au
-lycée Champollion (Grenoble) de 2022 à 2023.
+This TIPE was done during my years in Scientific Preparatory Classes at the Lycée Champollion (Grenoble, France) from 2022 to 2023.
 
-Le thème de cette année était : **la Ville**.
+The theme of the year was : **the City**.
 
-Ce TIPE se place dans le cadre de l'étude des villes et de leur développement à l'aide de modèles mathématiques. La
-modélisation choisie ici est celle d'une fractale afin de répondre à la problématique suivante : **_Comment les fractales
-peuvent-elles nous renseigner sur l'évolution de nos villes ?_**
+This TIPE is about the study of cities and their evolution with mathematical models. Here, I modelised the city of Grenoble with fractals, in order to answer the following problematic :
 
+>A TIPE ("*Travaux d'Initiatives Personnells encadrées*", literally *Supervised Personal Initiative Work*)) is a pr<oject lead during the cursus in Preparatory Class for the competitive exams to access to engineering schools.
 
-## Objectif
+**In what extend do fractals help us to understand the evolution of our cities ?**
 
-L'objectif est ici d'appliquer le modèle mathématique des fractales à une ville (ici Grenoble) et sa périphérie afin 
-d'en extraire des informations telles que la dimension de Hausdorff associée (en dimension 2) grâce à la méthode dite 
-"*Box Counting Method*" implémentée à l'aide du langage de programmation Python.
+## Objective
 
-Une fois une telle information obtenue, elle sera utilisée pour caractériser la compacité de la ville. Le processus sera
-répété à plusieurs reprises mais à des périodes historiques différentes afin d'être capable de commenter l'évolution de
-l'indice de compacité au cours du temps, et si possible d'en trouver les raisons socio-économiques.
+In this document I will apply the mathematical model of fractal to cities and their outskirts. It will help me to extract pieces of infomations such as the associated Hausdorff dimension (also called Fractal Dimension) thanks to the *Box-Counting Method*. Moreover, the Hausdorff dimension is correlated with the density of buildings. So, the goal is to evaluate the evolution of urbanization thanks to the Hausdorff dimension, and to explain the socia-economic reasons of the transformations.
 
-Une telle étude sera menée à l'aide de cartes d'occupation des sols issues de l'analyse d'image-satellites. Pour des
-époques plus anciennes, des cartes historiques seront numériquement traitées afin de les rendre utilisables.
+ For this, I will use the programming language Python, and repeat the processus for multiple years.
 
-## Résultats
+## Data sources
 
-![Analyse Fractale de Grenoble en 1990, 2006 et 2018](results/timelapse_v3.png)
+* [CORINE Land Cover](https://land.copernicus.eu/pan-european/corine-land-cover) : Ground Occupation Map (1990, 2006, 2018)
 
+## Results
 
-## Démarche
+>Fractal Analysis of Grenoble and its outskirt in 1990, 2006 and 2018. Each cell is 1km-sided.
 
-Après avoir divisé la périphérie de Grenoble en 400 carrés de 2.5km de côté, on applique la méthode dite *Box Counting
-Method* à chacune d'entre elles afin d'en déduire la dimension fractale (ou de Hausdorff) de chacune. Dans le cas de la
-ville de Grenoble en 2018, on obtient la répartition suivante : 
+>![Fractal Analysis of Grenoble (1990, 2006, 2018)](results/timelapse_v3.png)
 
-![Analyse Fractale de Grenoble (Première Version)](results/timelapse_v1.png)
+## Approach
 
-Tout d'abord, on retrouve l'organisation générale de la ville de Grenoble avec son hypercentre (au centre en bleu) où
-les bâtiments sont répartis plus densément et sa périphérie en forme d'étoile à trois branches imposée par les montagnes.
+First, I divided the maps of Grenoble into 2.5km-sided cells. Then I applied the *Box-Counting Method* to each cell to determine their Hausdorff Dimension. With the first algorithm I used, I obtain the following plots :
 
-Toutefois, on observe des zones de dimensions fractales négatives, ce qui est impossible. Après étude des zones concernées,
-on découvre que ce sont des zones quasiment vides, dont la répartition des bâtiments se rapproche du point. Cela devrait 
-alors être associé à une dimension fractale proche de 0. 
+>![First Fractal Analysis of Grenoble](results/timelapse_v1.png)
 
-On pourrait alors songer à simplement forcer l'algorithme à affecter la valeur zéro dans le cas d'une dimension trouvée 
-négative. Pourtant, il semble plus intéressant d'affecter le complément à 2 de la dimension trouvée puisque qu'on pourrait
-interpréter le résultat trouvé comme la dimension de Hausdorff de l'ensemble formée par les zones sans bâtiments. On 
-obtient le résultat suivant :
+To begin with, we can observe that the global organization of the city is respected : the outksirt is shaped like a 3-branches star because of mountains. The downtown of Grenoble has a Hausdorff Dimension of about 2 which is correct because the builing are near of each other. 
 
-<div align="center">
-    <img src="results/Grenoble_2018_comp2.png" alt="Analyse Fractale de Grenoble en 2018 avec méthode du complément à deux dans le cas d'un résultat négatif" width="50%">
-</div>
+However, some cells have a negative dimension : that's impossible. Indeed, these cells are almost empty. Their dimensions should be about 0 because the organization of buildings is similar to a point.
 
-On voit immédiatement que cela ne fonctionne pas : des zones de dimension proche de 2 apparaissent à des endroits vides.
-De plus, en appliquant l'algorithme au [Tapis de Sierpiński](https://fr.wikipedia.org/wiki/Tapis_de_Sierpi%C5%84ski), on
-obtient une dimension de Hausdorff de 1,60 alors que la dimension avérée est 1,89. Ainsi l'algorithme semble être à remettre
-en cause.
+In order to verify if the algorithm works correctly, I execute it on the [Sierpiński Carpet](https://en.wikipedia.org/wiki/Sierpi%C5%84ski_carpet). The found Hausdorff dimension is 1.60 which is false : it should be 1.89.
 
-On décide alors d'utiliser une version plus simple de l'algorithme Box-Counting, qui semble bien mieux fonctionner :
+So, I decided to change the algorithm to a simpler version of the *Box-Counting Method*, which seems to work better :
 
-![Analyse Fractale de Grenoble (Deuxième Version)](results/timelapse_v2.png)
+> The cells are now 1km-sided.
 
-Toutefois, on observe que les zones denses (l'hyper-centre de Grenoble en particulier) n'ont pas une dimension proche de 2 mais environ 1,5 ce qui n'est pas cohérent.
+>![Second Fractal Analysis of Grenoble](results/timelapse_v2.png)
 
-Pour résoudre ce problème, il est nécessaire d'augmenter artificiellement la taille des subdivisons afin de pouvoir utiliser une plus large gamme de tailles de boîtes. On obtient alors une dimension bien plus cohérente (~ 1,95).
+Nevertheless, some packed cells (such as Grenoble's Downtown) don't have a dimension near to 2, but about 1,5 which is illogical.
 
-D'autres parts, une clause *try: catch:* a été supprimée dans *fractal_analysis.box_counting* puisqu'elle semblait inutile. Pourtant à l'éxecution suivante, le calcul de log(0) apparait au niveau de la position de la clause supprimée.
+To solve this problem, I had to artificially increase the side of subdivions to enable the use of larger boxes by the *Box-Counting Method*. I get a more correct dimension (~1.95).
 
-Après quelques relectures des fonctions, une erreur est découverte dans *fractal_dimension.is_in* : une réinitialisation de j manquait. En particulier, cela voulait dire que les zones partiellement urbanisées se voyaient assigner une dimension nulle, ce qui ne devait pas être le cas.
+On an other hand, a *try: catch:* block was deleted in the function *fractal_analysis.box_counting* because I thought it was useless. But at the next execution, a log(0) poped in the calcul where the block was took back.
 
-Après ces deux corrections majeures, on obtient les résultats suivants :
+After some investigations, I found an error in the function *fractal_dimension.is_in* : the reset of j was missing. Especially, it means that some low-urbanized areas were associated to a null dimension, even if it shouldn't be the case.
 
-![Analyse Fractale de Grenoble (Deuxième Version)](results/timelapse_v3.png)
+After those two main corrections, I obtained :
 
-## Matériel
+>![Third Fractal Analysis of Grenoble](results/timelapse_v3.png)
 
-Ces analyses ont été effectuées en 43min, 47min et 49min respectivement. Le matériel utilisé est le suivant :
+## Hardware
 
-* Processeur : Intel Core i5 vPro (2,30GHz)
+These analysis were done in 43min, 47min and 49min respectively with the following hardware :
+
+* Processor : Intel Core i5 vPro (2,30GHz)
 * RAM : 8GB
-* Mémoire : 512GB SSD
-* Langage de Programmation : Python 3.9.2
+* Memory : 512GB SSD
+* Programming Language : Python 3.9.2
 
-## Source des données utilisées
-
-[CORINE Land Cover](https://land.copernicus.eu/pan-european/corine-land-cover) : Carte d'occupation des sols (1990, 2006, 2018)
-
-## Bibliographie
+## Bibliography
 
 * Mark McClure : [*Chaos and Fractals*](https://www.marksmath.org/classes/Fall2021ChaosAndFractals/chaos_and_fractals_2021/contents.html) (Section 4) 
 
