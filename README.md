@@ -4,9 +4,9 @@ This TIPE was done during my years in Scientific Preparatory Classes at the Lyc�
 
 The theme of the year was : **the City**.
 
-This TIPE is about the study of cities and their evolution with mathematical models. Here, I modelised the city of Grenoble with fractals, in order to answer the following problematic :
+>A TIPE ("*Travaux d'Initiatives Personnells encadrées*", literally *Supervised Personal Initiative Work*)) is a project lead during the cursus in Preparatory Class for the competitive exams to access to engineering schools.
 
->A TIPE ("*Travaux d'Initiatives Personnells encadrées*", literally *Supervised Personal Initiative Work*)) is a pr<oject lead during the cursus in Preparatory Class for the competitive exams to access to engineering schools.
+This TIPE is about the study of cities and their evolution with mathematical models. Here, I modelised the city of Grenoble with fractals, in order to answer the following problematic :
 
 **In what extend do fractals help us to understand the evolution of our cities ?**
 
@@ -22,7 +22,7 @@ In this document I will apply the mathematical model of fractal to cities and th
 
 ## Results
 
->Fractal Analysis of Grenoble and its outskirt in 1990, 2006 and 2018. Each cell is 1km-sided.
+Fractal Analysis of Grenoble and its outskirt in 1990, 2006 and 2018. Each cell is 1km-sided.
 
 >![Fractal Analysis of Grenoble (1990, 2006, 2018)](results/timelapse_v3.png)
 
@@ -40,9 +40,9 @@ In order to verify if the algorithm works correctly, I execute it on the [Sierpi
 
 So, I decided to change the algorithm to a simpler version of the *Box-Counting Method*, which seems to work better :
 
-> The cells are now 1km-sided.
-
 >![Second Fractal Analysis of Grenoble](results/timelapse_v2.png)
+
+> The cells are now 1km-sided.
 
 Nevertheless, some packed cells (such as Grenoble's Downtown) don't have a dimension near to 2, but about 1,5 which is illogical.
 
