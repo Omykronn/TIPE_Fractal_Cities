@@ -67,12 +67,12 @@ These analysis were done in 43min, 47min and 49min respectively with the followi
 
 ## Bibliography
 
+* Dierk Schleicher : [*Hausdorff Dimension, its Properties, and its Surprises*](https://arxiv.org/abs/math/0505099) (Sections 1 to 4)
+
 * Mark McClure : [*Chaos and Fractals*](https://www.marksmath.org/classes/Fall2021ChaosAndFractals/chaos_and_fractals_2021/contents.html) (Section 4) 
 
-* Dierk Schleicher : [*Hausdorff Dimension, its Properties, and its Surprises*](https://arxiv.org/abs/math/0505099)
-
-* Sara Encarnação, Marcos Gaudiano, Francisco C. Santos, José A. Tenedório, & Jorge M Pacheco : [*Fractal Carthography of urban area*](https://www.nature.com/articles/srep00527)
-
-* National Institutes of Health : [*Fractals and Fractal Analysis*](https://imagej.nih.gov/ij/plugins/fraclac/FLHelp/TheoryStartUpScreen.htm) (Section Box Counting)
+* Ivana Konatar, Natasa Popovic & Tomo Popovic : [*Box-Counting Method in Python for Fractal Analysis of Biomedical Images*](https://www.semanticscholar.org/paper/Box-Counting-Method-in-Python-for-Fractal-Analysis-Konatar-Popovic/2d7d5f1e1468a30db49e48969abd8a46da32c20c)
 
 * Khaled Harrar & Latifa Hamami : [*The box counting method for evaluate the fractal Dimension in radiographic images*](https://www.researchgate.net/publication/254455405_The_Box_Counting_Method_for_Evaluate_the_Fractal_Dimension_in_Radiographic_Images)
+
+* Sara Encarnação, Marcos Gaudiano, Francisco C. Santos, José A. Tenedório, & Jorge M Pacheco : [*Fractal Carthography of urban area*](https://www.nature.com/articles/srep00527)
