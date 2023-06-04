@@ -60,7 +60,7 @@ def box_counting(array: np.ndarray):
 
     # List of the used powers of 2, then the associated number of square
     return [2**e for e in range(p)], data
-
+                
 
 def analyse_one_cell(image_dir: str):
     """
@@ -77,14 +77,17 @@ def analyse_one_cell(image_dir: str):
     else:
         absi, ordo = box_counting(picture)  # Box Counting Method
 
-        # TODO : Résolve the problem of log(0) (e.g. 5x5_0_3)
-        for i in range(len(absi)):
-                absi[i] = -log(absi[i])
-                ordo[i] = log(ordo[i])
+        print(absi, ordo)
 
+        absi = [-log(r) for r in absi]
+        ordo = [log(N) for N in ordo]
+        
         # Determination of the fractal dimension with a linear regression between log(1/r) and log(N(r))
         regression_data = np.polyfit(absi, ordo, 1)
 
         a = regression_data[0]  # The fractal dimension is the slope
 
+        #with open("correlation_coeff.txt", 'a') as file:
+        #    file.write("{},{}\n".format(image_dir,regression_data[2]))
+        
     return a

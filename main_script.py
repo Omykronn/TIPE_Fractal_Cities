@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from fractal_dimension import analyse_one_cell
 from map_treatment import prepare
 from os import makedirs
-from datetime import datetime
 
 
 def main_script(city: str, year: int, resolution: int, dilatation: int, src_dir: str, data_dir: str, result_dir: str,
@@ -37,11 +36,8 @@ def main_script(city: str, year: int, resolution: int, dilatation: int, src_dir:
 
     makedirs(result_dir, exist_ok=True)
 
-    # Information about time and day
-    time = datetime.now().strftime("%d%b%Y_%H%M")
-
     # Saving of the fractal dimensions in a csv file
-    with open("{0}/{1}_{2}_{3}x{3}_{4}.csv".format(result_dir, city, year, resolution, time), 'a') as file:
+    with open("{0}/{1}_{2}_{3}x{3}.csv".format(result_dir, city, year, resolution), 'w') as file:
         file.write("X,Y,Fractal Dimension\n")
 
         for i in range(resolution):
@@ -51,10 +47,10 @@ def main_script(city: str, year: int, resolution: int, dilatation: int, src_dir:
     plt.close()
     plt.imshow(matrix, cmap="inferno", vmin=0, vmax=2)  # Plot to show all the fractal dimensions
     plt.title("{0} {1} (resolution = {2})".format(city, year, resolution))
-    plt.colorbar(label="Dimension Fractale")
+    plt.colorbar(label="Estimated Fractal Dimension")
 
     # Saving of the figure
-    plt.savefig("{0}/{1}_{2}_{3}x{3}_{4}.png".format(result_dir, city, year, resolution, time), dpi=300)
+    plt.savefig("{0}/{1}_{2}_{3}x{3}.png".format(result_dir, city, year, resolution), dpi=300)
 
     if show_fig:
         plt.show()

@@ -61,6 +61,8 @@ def mask(data: np.ndarray, criterion: tuple = (109, 40, 45), method = similar_co
 
         if i % 100 == 0:
             print("MASK", int(i * 10000 / height) / 100, "%")  # Indication about the progression
+            
+    print("MASK DONE")
 
 
 def clear(data: np.ndarray):
@@ -126,13 +128,15 @@ def subdivide(array: np.ndarray, x_sub: int, y_sub: int, dilatation: int, save_d
     else:
         new_height = height // x_sub
         new_width = width // y_sub
+        
+        print(new_height, new_width)
 
         makedirs(save_dir, exist_ok=True)  # Creation of the directory for results
 
         for i in range(x_sub):
             for j in range(y_sub):
                 subdivision = [[array[i * new_height + k][j * new_width + l] for l in range(new_width)] for k in range(new_height)]
-                subdivision = dilate(subdivision, dilatation)
+                #subdivision = dilate(subdivision, dilatation)
                 Image.fromarray(np.array(subdivision)).save("{}/subdivision_{}_{}.png".format(save_dir, i, j))
 
                 print("SUBDIVISION {} {}".format(i, j))
@@ -172,7 +176,7 @@ def prepare(name_file: str, resolution: int, dilatation: int, exit_dir: str = "d
     # Creation of all the needed directory
     makedirs(exit_dir, exist_ok=True)
 
-    mask(picture, (16, 16, 16), darker_color)  # First : application of a mask to keep only the useful data
+    mask(picture, (200, 200, 200), darker_color)  # First : application of a mask to keep only the useful data (for CORINE : 16)
     subdivide(picture, resolution, resolution, dilatation, exit_dir)  # Then, subdivision of the image according to resolution
 
 
